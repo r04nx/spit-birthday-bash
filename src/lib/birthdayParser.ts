@@ -7,7 +7,13 @@ export interface BirthdayPerson {
 }
 
 export const parseBirthdayFile = (content: string): BirthdayPerson[] => {
-  const entries = content.split('[').filter(entry => entry.trim());
+  // Remove commented lines (lines starting with #)
+  const cleanedContent = content
+    .split('\n')
+    .filter(line => !line.trim().startsWith('#'))
+    .join('\n');
+  
+  const entries = cleanedContent.split('[').filter(entry => entry.trim());
   
   return entries.map(entry => {
     const lines = entry.split('\n').filter(line => line.trim() && !line.trim().startsWith(']'));

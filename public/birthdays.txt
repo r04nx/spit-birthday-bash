@@ -77,3 +77,12 @@ Department: Computer Engineering
 Designation: Research Scholar
 Image: https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop
 ]
+
+# This entry is commented out and will be ignored
+# [
+# Name: Test Person
+# Birthday: 1 December 2025
+# Department: Testing Department
+# Designation: Test Role
+# Image: 
+# ]
