@@ -4,6 +4,7 @@ export interface BirthdayPerson {
   department: string;
   designation: string;
   image: string;
+  email?: string;  // Optional email field, not displayed on frontend
 }
 
 export const parseBirthdayFile = (content: string): BirthdayPerson[] => {
@@ -34,6 +35,8 @@ export const parseBirthdayFile = (content: string): BirthdayPerson[] => {
         person.designation = value;
       } else if (key.toLowerCase().includes('image')) {
         person.image = value;
+      } else if (key.toLowerCase().includes('email')) {
+        person.email = value.toLowerCase().trim();
       }
     });
     

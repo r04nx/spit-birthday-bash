@@ -10,41 +10,46 @@ const RotatingCards = ({ people }: RotatingCardsProps) => {
   if (people.length === 0) return null;
 
   return (
-    <div className="py-8 overflow-hidden">
-      <h2 className="text-3xl md:text-4xl font-display font-bold text-center mb-8 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-        This Month's Celebrations 🎊
-      </h2>
+    <div className="relative w-full h-full overflow-hidden rounded-lg">
+      {/* Top gradient overlay */}
+      <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-background to-transparent z-10 pointer-events-none" />
       
-      <div className="flex gap-6 animate-marquee hover:pause">
-        {[...people, ...people].map((person, index) => {
-          const defaultImage = "https://api.dicebear.com/7.x/avataaars/svg?seed=" + encodeURIComponent(person.name);
-          
-          return (
-            <Card
-              key={index}
-              className="flex-shrink-0 w-64 p-6 bg-gradient-to-br from-card to-card/80 border-2 border-primary/20 shadow-[0_8px_30px_-8px_hsl(var(--primary)/0.3)] hover:shadow-[0_12px_40px_-8px_hsl(var(--primary)/0.4)] transition-all duration-300 hover:scale-105 cursor-pointer"
-            >
-              <div className="flex flex-col items-center space-y-4">
-                <div className="relative">
-                  <img
-                    src={person.image || defaultImage}
-                    alt={person.name}
-                    className="w-20 h-20 rounded-full object-cover border-2 border-primary shadow-md"
-                  />
-                  <div className="absolute -top-1 -right-1 bg-secondary rounded-full p-1">
-                    <Cake className="w-4 h-4 text-secondary-foreground" />
+      {/* Bottom gradient overlay */}
+      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none" />
+      
+      <div className="h-full overflow-hidden px-2">
+        <div className="flex flex-col gap-3 animate-marquee-vertical hover:pause py-4">
+          {[...people, ...people].map((person, index) => {
+            const defaultImage = "https://api.dicebear.com/7.x/avataaars/svg?seed=" + encodeURIComponent(person.name);
+            
+            return (
+              <Card
+                key={index}
+                className="flex-shrink-0 p-4 bg-gradient-to-br from-card to-card/80 border-2 border-primary/20 shadow-[0_8px_30px_-8px_hsl(var(--primary)/0.3)] hover:shadow-[0_12px_40px_-8px_hsl(var(--primary)/0.4)] hover:border-primary/40 transition-all duration-300 hover:scale-[1.02] cursor-pointer group"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="relative flex-shrink-0">
+                    <div className="absolute -inset-1.5 bg-gradient-to-r from-primary via-secondary to-accent rounded-full blur-md opacity-50 group-hover:opacity-75 transition-opacity" />
+                    <img
+                      src={person.image || defaultImage}
+                      alt={person.name}
+                      className="relative w-20 h-20 rounded-full object-cover border-2 border-card shadow-lg ring-2 ring-primary/30 group-hover:ring-primary/50 transition-all"
+                    />
+                    <div className="absolute -top-1 -right-1 bg-secondary rounded-full p-1.5 shadow-lg group-hover:scale-110 transition-transform">
+                      <Cake className="w-4 h-4 text-secondary-foreground" />
+                    </div>
+                  </div>
+                  
+                  <div className="text-left space-y-0.5 flex-1 min-w-0">
+                    <h3 className="font-display font-bold text-base text-foreground truncate group-hover:text-primary transition-colors">{person.name}</h3>
+                    <p className="text-sm font-semibold text-primary truncate">{person.birthday}</p>
+                    <p className="text-xs text-muted-foreground truncate">{person.department}</p>
                   </div>
                 </div>
-                
-                <div className="text-center space-y-1">
-                  <h3 className="font-display font-bold text-lg text-foreground">{person.name}</h3>
-                  <p className="text-sm font-semibold text-primary">{person.birthday}</p>
-                  <p className="text-xs text-muted-foreground">{person.department}</p>
-                </div>
-              </div>
-            </Card>
-          );
-        })}
+              </Card>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
