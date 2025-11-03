@@ -52,9 +52,15 @@ export const filterByCurrentMonth = (people: BirthdayPerson[]): BirthdayPerson[]
 
 export const loadBirthdayData = async (): Promise<BirthdayPerson[]> => {
   try {
-    const response = await fetch('/birthdays.txt');
+    // Add cache-busting to ensure fresh data
+    const response = await fetch('/birthdays.txt?t=' + new Date().getTime(), {
+      cache: 'no-store'
+    });
     const content = await response.text();
-    return parseBirthdayFile(content);
+    console.log('Loaded birthday file content:', content);
+    const parsed = parseBirthdayFile(content);
+    console.log('Parsed birthday data:', parsed);
+    return parsed;
   } catch (error) {
     console.error('Error loading birthday data:', error);
     return [];
