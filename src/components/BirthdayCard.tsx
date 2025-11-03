@@ -61,7 +61,7 @@ const BirthdayCard = ({ person }: BirthdayCardProps) => {
         </div>
 
         <div className="space-y-3 flex-1">
-          <h3 className="text-2xl md:text-3xl font-bold text-foreground">
+          <h3 className="text-2xl md:text-3xl font-display font-bold text-foreground">
             {person.name}
           </h3>
           

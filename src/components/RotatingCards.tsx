@@ -11,7 +11,7 @@ const RotatingCards = ({ people }: RotatingCardsProps) => {
 
   return (
     <div className="py-8 overflow-hidden">
-      <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+      <h2 className="text-3xl md:text-4xl font-display font-bold text-center mb-8 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
         This Month's Celebrations 🎊
       </h2>
       
@@ -37,7 +37,7 @@ const RotatingCards = ({ people }: RotatingCardsProps) => {
                 </div>
                 
                 <div className="text-center space-y-1">
-                  <h3 className="font-bold text-lg text-foreground">{person.name}</h3>
+                  <h3 className="font-display font-bold text-lg text-foreground">{person.name}</h3>
                   <p className="text-sm font-semibold text-primary">{person.birthday}</p>
                   <p className="text-xs text-muted-foreground">{person.department}</p>
                 </div>
