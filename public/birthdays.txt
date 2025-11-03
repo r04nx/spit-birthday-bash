@@ -1,13 +1,34 @@
+
+
+# This entry is commented out and will be ignored
+# [
+# Name: Test Person
+# Birthday: 1 December 2025
+# Department: Testing Department
+# Designation: Test Role
+# Image: 
+# ]
+
+
+
 [
-Name: Dr. Rajesh Mehta
-Birthday: 3 November 2025
-Department: Electronics Engineering
-Designation: Professor
-Image: https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop
+Name: Satya Nadella
+Birthday: 19 November 1967
+Department: Microsoft
+Designation: CEO & Chairman
+Image: https://upload.wikimedia.org/wikipedia/commons/0/09/Satya_Nadella_2017.jpg
 ]
 
 [
-Name: Priya Sharma
+Name: Ritesh Agarwal
+Birthday: 16 November 1993
+Department: OYO Rooms
+Designation: Founder & CEO
+Image: https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop
+]
+
+[
+Name: Dr. Priya Sharma
 Birthday: 8 November 2025
 Department: Computer Engineering
 Designation: Assistant Professor
@@ -19,70 +40,5 @@ Name: Amit Kumar Patel
 Birthday: 12 November 2025
 Department: Information Technology
 Designation: Student - Final Year
-Image: https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop
-]
-
-[
-Name: Sneha Reddy
-Birthday: 15 November 2025
-Department: Electronics & Telecommunication
-Designation: Student - Third Year
-Image: https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop
-]
-
-[
-Name: Prof. Sanjay Deshmukh
-Birthday: 18 November 2025
-Department: Mechanical Engineering
-Designation: Head of Department
-Image: https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop
-]
-
-[
-Name: Aisha Khan
-Birthday: 22 November 2025
-Department: Computer Engineering
-Designation: Student - Second Year
-Image: https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop
-]
-
-[
-Name: Rohan Pawar
-Birthday: 26 November 2025
-Department: EXTC
-Designation: Student - Final Year
 Image: https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop
 ]
-
-[
-Name: Dr. Kavita Joshi
-Birthday: 28 December 2025
-Department: Information Technology
-Designation: Associate Professor
-Image: https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop
-]
-
-[
-Name: Arjun Nair
-Birthday: 30 December 2025
-Department: Mechanical Engineering
-Designation: Student - Third Year
-Image: https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop
-]
-
-[
-Name: Neha Gupta
-Birthday: 5 December 2025
-Department: Computer Engineering
-Designation: Research Scholar
-Image: https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop
-]
-
-# This entry is commented out and will be ignored
-# [
-# Name: Test Person
-# Birthday: 1 December 2025
-# Department: Testing Department
-# Designation: Test Role
-# Image: 
-# ]

@@ -74,7 +74,7 @@ const Index = () => {
                 </span>
               </h2>
               <div className="w-full">
-                <CardGallery people={allPeople} />
+                <CardGallery people={thisMonthPeople} />
               </div>
             </div>
           </section>
