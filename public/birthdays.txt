@@ -1,0 +1,39 @@
+[
+Name: Rohan Pawar
+Birthday: 26 December 2025
+Department: EXTC
+Designation: Student
+Image: https://i.ibb.co/zh3ynq37/Gemini-Generated-Image-bxxjvtbxxjvtbxxj.png
+]
+
+[
+Name: Priya Sharma
+Birthday: 15 December 2025
+Department: Computer Engineering
+Designation: Faculty
+Image: 
+]
+
+[
+Name: Amit Kumar
+Birthday: 8 December 2025
+Department: Mechanical Engineering
+Designation: Student
+Image: https://i.ibb.co/zh3ynq37/Gemini-Generated-Image-bxxjvtbxxjvtbxxj.png
+]
+
+[
+Name: Sneha Reddy
+Birthday: 22 December 2025
+Department: IT
+Designation: Student
+Image: 
+]
+
+[
+Name: Dr. Rajesh Mehta
+Birthday: 3 December 2025
+Department: Electronics
+Designation: Professor
+Image: https://i.ibb.co/zh3ynq37/Gemini-Generated-Image-bxxjvtbxxjvtbxxj.png
+]
