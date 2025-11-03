@@ -95,9 +95,11 @@ def test_html_generation():
             print("❌ Name placeholder not replaced!")
             return False
         
-        if test_person['name'] in html:
+        # Check if first name is in HTML (since we only use first name)
+        first_name = test_person['name'].split()[0]
+        if first_name in html:
             print(f"✅ HTML generated successfully")
-            print(f"   Name replaced: {test_person['name']}")
+            print(f"   Name replaced: {first_name}")
             print(f"   HTML length: {len(html)} characters")
             
             # Save to file for inspection

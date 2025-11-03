@@ -12,18 +12,20 @@
 
 
 [
-Name: Satya Nadella
+Name: Sushant Goswami
 Birthday: 19 November 1967
 Department: Microsoft
 Designation: CEO & Chairman
+email: sushant.goswami@spit.ac.in
 Image: https://upload.wikimedia.org/wikipedia/commons/0/09/Satya_Nadella_2017.jpg
 ]
 
 [
-Name: Ritesh Agarwal
+Name: Dayanand Ambwade
 Birthday: 16 November 1993
-Department: OYO Rooms
-Designation: Founder & CEO
+Department: SPIT IT Incharge
+Designation: Assistant Professor
+email: dd_ambwade@spit.ac.in
 Image: https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop
 ]
 

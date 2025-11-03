@@ -10,17 +10,19 @@ import base64
 import requests
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.image import MIMEImage
 from datetime import datetime
 from pathlib import Path
 import time
 import schedule
+from email import encoders
 
 # Gmail SMTP Configuration (Hardcoded)
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 SENDER_EMAIL = "your-email@gmail.com"  # Replace with your Gmail
-SENDER_PASSWORD = "your-app-password"  # Replace with your Gmail App Password
-SENDER_NAME = "SPIT Birthday Team"
+SENDER_PASSWORD = "ppaasswwoorrdd"  # Replace with your Gmail App Password
+SENDER_NAME = "SPIT Birthday"
 
 # Paths
 BASE_DIR = Path(__file__).parent
@@ -102,10 +104,18 @@ def get_todays_birthdays():
     return todays_birthdays
 
 
-def download_and_encode_image(url):
+def download_and_encode_image(url, person_name=""):
     """Download an image from URL and encode it as base64"""
     try:
-        response = requests.get(url, timeout=10)
+        # Add headers to avoid 403 errors
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Referer': 'https://www.google.com/'
+        }
+        
+        response = requests.get(url, timeout=15, headers=headers, allow_redirects=True)
         response.raise_for_status()
         
         # Determine image type from URL or content-type
@@ -116,78 +126,144 @@ def download_and_encode_image(url):
             mime_type = 'image/png'
         elif 'gif' in content_type:
             mime_type = 'image/gif'
+        elif 'svg' in content_type:
+            mime_type = 'image/svg+xml'
+        elif 'webp' in content_type:
+            mime_type = 'image/webp'
         else:
             mime_type = 'image/png'
         
         # Encode to base64
         encoded = base64.b64encode(response.content).decode('utf-8')
+        print(f"✅ Successfully downloaded and encoded image ({len(response.content)} bytes)")
         return f"data:{mime_type};base64,{encoded}"
     except Exception as e:
-        print(f"Error downloading image from {url}: {e}")
-        # Return a placeholder data URI
-        return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+        print(f"⚠️  Error downloading image from {url}: {e}")
+        print(f"   Falling back to default avatar for {person_name}")
+        
+        # Try to get a default avatar from DiceBear API
+        try:
+            avatar_url = f"https://api.dicebear.com/7.x/avataaars/svg?seed={person_name}"
+            avatar_response = requests.get(avatar_url, timeout=10)
+            avatar_response.raise_for_status()
+            
+            # Encode SVG to base64
+            encoded = base64.b64encode(avatar_response.content).decode('utf-8')
+            print(f"✅ Using default avatar from DiceBear")
+            return f"data:image/svg+xml;base64,{encoded}"
+        except Exception as avatar_error:
+            print(f"⚠️  Could not fetch default avatar: {avatar_error}")
+            # Return a simple 1x1 transparent PNG as last resort
+            return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
 
 
-def build_email_html(person):
+def build_email_html(person, use_cid=False):
     """Build the complete HTML email with embedded images"""
+    print(f"\n📧 Building email HTML for {person['name']}...")
+    
     # Read the email template
     with open(EMAIL_TEMPLATE_FILE, 'r', encoding='utf-8') as f:
         html_content = f.read()
     
     # Replace the {{NAME}} placeholder with actual name
-    html_content = html_content.replace('{{NAME}}', person['name'])
+    first_name = person['name'].split()[0]
+    html_content = html_content.replace('{{NAME}}', first_name)
+    print(f"   ✓ Replaced {{{{NAME}}}} with {first_name}")
     
-    # Download and encode the person's image if available
-    if person.get('image'):
-        person_image_base64 = download_and_encode_image(person['image'])
-        # Replace the image source in the main birthday image section
-        html_content = html_content.replace('src="images/image-1.png"', f'src="{person_image_base64}"')
+    # If using CID (Content-ID) for inline images, replace the URL
+    if use_cid:
+        html_content = html_content.replace(
+            'src="https://i.ibb.co/pvGKyRvf/image-1.png"',
+            'src="cid:birthday_image"'
+        )
+        print(f"   ✓ Using inline image attachment (CID)")
+    else:
+        print(f"   ✓ Using hosted image URL")
     
-    # Note: Social media icons and other images are already removed or can be handled similarly
-    # For now, we'll leave them as relative paths since we removed social media
-    
+    print(f"   ✓ Email HTML compiled successfully ({len(html_content)} characters)")
     return html_content
 
 
 def send_birthday_email(person):
     """Send a birthday email to the person"""
     if not person.get('email'):
-        print(f"No email address for {person['name']}, skipping...")
+        print(f"⚠️  No email address for {person['name']}, skipping...")
         return False
     
     try:
-        # Create message
-        msg = MIMEMultipart('alternative')
-        msg['Subject'] = f"🎉 Happy Birthday {person['name'].split()[0]}! 🎂 - SPIT Family"
+        print(f"\n{'='*60}")
+        print(f"📨 Sending Birthday Email")
+        print(f"{'='*60}")
+        print(f"   To: {person['name']} <{person['email']}>")
+        
+        # Create message with related content for inline images
+        msg = MIMEMultipart('related')
+        first_name = person['name'].split()[0]
+        msg['Subject'] = f"🎉 Happy Birthday {first_name}! 🎂 - SPIT Family"
         msg['From'] = f"{SENDER_NAME} <{SENDER_EMAIL}>"
         msg['To'] = person['email']
         
-        # Build HTML content with embedded images
-        html_content = build_email_html(person)
+        print(f"   Subject: {msg['Subject']}")
+        
+        # Create alternative part for HTML
+        msg_alternative = MIMEMultipart('alternative')
+        msg.attach(msg_alternative)
+        
+        # Build HTML content with CID reference
+        html_content = build_email_html(person, use_cid=True)
         
         # Attach HTML content
-        html_part = MIMEText(html_content, 'html')
-        msg.attach(html_part)
+        html_part = MIMEText(html_content, 'html', 'utf-8')
+        msg_alternative.attach(html_part)
         
+        # Download and attach the image inline
+        print(f"   📥 Downloading image for inline attachment...")
+        try:
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            }
+            img_response = requests.get('https://i.ibb.co/pvGKyRvf/image-1.png', 
+                                       timeout=10, headers=headers)
+            img_response.raise_for_status()
+            
+            # Create image attachment
+            image = MIMEImage(img_response.content)
+            image.add_header('Content-ID', '<birthday_image>')
+            image.add_header('Content-Disposition', 'inline', filename='birthday.png')
+            msg.attach(image)
+            print(f"   ✓ Image attached inline ({len(img_response.content)} bytes)")
+        except Exception as img_error:
+            print(f"   ⚠️  Could not attach image: {img_error}")
+            print(f"   Falling back to hosted URL")
+            # Rebuild HTML without CID if image download fails
+            html_content = build_email_html(person, use_cid=False)
+            msg_alternative.detach(html_part)
+            html_part = MIMEText(html_content, 'html', 'utf-8')
+            msg_alternative.attach(html_part)
+        
+        print(f"\n   📡 Connecting to SMTP server {SMTP_SERVER}:{SMTP_PORT}...")
         # Connect to Gmail SMTP server
-        print(f"Connecting to SMTP server...")
         server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
         server.starttls()
         
         # Login
-        print(f"Logging in...")
+        print(f"   🔐 Logging in as {SENDER_EMAIL}...")
         server.login(SENDER_EMAIL, SENDER_PASSWORD)
         
         # Send email
-        print(f"Sending birthday email to {person['name']} ({person['email']})...")
+        print(f"   📤 Sending email...")
         server.send_message(msg)
         server.quit()
         
+        print(f"\n{'='*60}")
         print(f"✅ Birthday email sent successfully to {person['name']}!")
+        print(f"{'='*60}\n")
         return True
         
     except Exception as e:
+        print(f"\n{'='*60}")
         print(f"❌ Error sending email to {person['name']}: {e}")
+        print(f"{'='*60}\n")
         return False
 
 
